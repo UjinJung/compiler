@@ -282,14 +282,14 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 20
-#define YY_END_OF_BUFFER 21
+#define YY_NUM_RULES 21
+#define YY_END_OF_BUFFER 22
 static yyconst short int yy_accept[91] =
     {   0,
-        0,    0,   21,   20,   19,    8,   16,    6,    7,    3,
+        0,    0,   22,   20,   19,    8,   16,    6,    7,    3,
         1,   16,    2,    4,   18,   18,    5,   17,   20,   17,
        17,   17,   17,   17,   17,   17,   17,   19,    0,   15,
-        0,    0,    0,    0,   18,   17,   17,   17,   17,   17,
+        0,    0,    0,   10,   18,   17,   17,   17,   17,   17,
        17,   17,   13,   17,   17,   17,   17,   15,    0,    0,
         0,    0,    0,   12,   10,   17,   17,   17,   17,   17,
        17,   17,    0,   14,    0,    0,    0,    0,    0,    0,
@@ -440,9 +440,9 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "backupTestchange.l"
+#line 1 "hw2_source.l"
 #define INITIAL 0
-#line 2 "backupTestchange.l"
+#line 2 "hw2_source.l"
 extern char yylval[100];
 extern char yylID[17];
 extern char yylINT[11];
@@ -473,6 +473,7 @@ extern char exit_ = 0;
 #define LBRACE  27
 #define RBRACE  28
 #define EPSILON 29
+#define LERROR  30
 
 int id_num = 1;
 int str_num = 1;
@@ -482,7 +483,7 @@ int ind = 0;
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#line 486 "lex.yy.c"
+#line 487 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -633,9 +634,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 57 "backupTestchange.l"
+#line 58 "hw2_source.l"
 
-#line 639 "lex.yy.c"
+#line 640 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -720,72 +721,72 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 58 "backupTestchange.l"
+#line 59 "hw2_source.l"
 {strcpy(yylval, yytext); return PLUS; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 59 "backupTestchange.l"
+#line 60 "hw2_source.l"
 {strcpy(yylval, yytext); return MINUS; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 60 "backupTestchange.l"
+#line 61 "hw2_source.l"
 {strcpy(yylval, yytext); return MULTI; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 61 "backupTestchange.l"
+#line 62 "hw2_source.l"
 {strcpy(yylval, yytext); return DIV; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 62 "backupTestchange.l"
+#line 63 "hw2_source.l"
 {strcpy(yylval, yytext); return ASSIGN; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 63 "backupTestchange.l"
+#line 64 "hw2_source.l"
 {strcpy(yylval, yytext); return LBRACE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 64 "backupTestchange.l"
+#line 65 "hw2_source.l"
 {strcpy(yylval, yytext); return RBRACE; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 65 "backupTestchange.l"
-{return EXIT;}
+#line 66 "hw2_source.l"
+{ return EXIT; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 67 "backupTestchange.l"
+#line 68 "hw2_source.l"
 {exit_ = 1; return EXIT;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 68 "backupTestchange.l"
-{strcpy(yylval, yytext); return FLOAT;}
+#line 69 "hw2_source.l"
+{strcpy(yylval, yytext); yylval[strlen(yytext)] = '\0'; return FLOAT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 69 "backupTestchange.l"
+#line 70 "hw2_source.l"
 {strcpy(yylval, yytext); return COMMENTS;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 70 "backupTestchange.l"
+#line 71 "hw2_source.l"
 {strncpy(yylval, yytext, strlen(yytext)-1); return COMMENTS;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 71 "backupTestchange.l"
+#line 72 "hw2_source.l"
 {strcpy(yylval, yytext); return KEYWORDS;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "backupTestchange.l"
+#line 73 "hw2_source.l"
 {
     strcpy(yylval, yytext);
     while(ind < strlen(yytext)) {
@@ -800,35 +801,40 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 83 "backupTestchange.l"
+#line 84 "hw2_source.l"
 {strcpy(yylval, yytext); return STRINGS;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 84 "backupTestchange.l"
+#line 85 "hw2_source.l"
 {strcpy(yylval, yytext); return OPERATORS;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 85 "backupTestchange.l"
+#line 86 "hw2_source.l"
 {strcpy(yylID, yytext); return IDENTIFIERS;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 86 "backupTestchange.l"
+#line 87 "hw2_source.l"
 {strcpy(yylINT, yytext); return INTEGERS;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 87 "backupTestchange.l"
+#line 88 "hw2_source.l"
 {}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 88 "backupTestchange.l"
+#line 89 "hw2_source.l"
+{printf("Lexical Error!!\n"); syntaxError_=1; return LERROR;}
+	YY_BREAK
+case 21:
+YY_RULE_SETUP
+#line 90 "hw2_source.l"
 ECHO;
 	YY_BREAK
-#line 832 "lex.yy.c"
+#line 838 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1714,7 +1720,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 88 "backupTestchange.l"
+#line 90 "hw2_source.l"
 
 
 char yylval[100];
@@ -1728,13 +1734,13 @@ struct SyntaxTree_* exp();
 struct SyntaxTree_* restexp();
 struct SyntaxTree_* term();
 struct SyntaxTree_* restterm();
-struct SyntaxTree_* assign  ();
+struct SyntaxTree_* assign();
 struct SyntaxTree_* restassign();
 struct SyntaxTree_* factor();
 
 typedef struct SyntaxTree_ {
     int  Type;
-    int  number;
+    double  number;
     char id[17];
     struct SyntaxTree_ *left;
     struct SyntaxTree_ *right;
@@ -1742,7 +1748,8 @@ typedef struct SyntaxTree_ {
 
 typedef struct SymTable_ {
     char id[17];
-    int value;
+    double value;
+    char isAssign;
 } symtable;
 
 struct SymTable_* sym_table;
@@ -1758,7 +1765,6 @@ struct SyntaxTree_* parsing (void) {
         exit_ = 1;
         return parsingR;
     }else{
-        printf("parsing\n");
         parsingR = assign();
         return parsingR;
     }
@@ -1773,7 +1779,6 @@ struct SyntaxTree_* assign() {
 	restassignT = (st*)malloc(sizeof(st));
 	assignR = (st*)malloc(sizeof(st));
 
-    printf("assign\n");
 	expT = exp();
 	restassignT = restassign();
 
@@ -1793,7 +1798,6 @@ struct SyntaxTree_* restassign() {
 	restassignT = (st*)malloc(sizeof(st));
 	restassignR = (st*)malloc(sizeof(st));
 
-    printf("restassign\n");
     if(tok!=111){
     	if (tok == ASSIGN) {
     		tok = yylex();
@@ -1807,10 +1811,11 @@ struct SyntaxTree_* restassign() {
     		return restassignR;
     	}
         restassignR->Type = EPSILON;
+        syntaxError_ = 1;
+        printf("syntax Error!!");
         return restassignR;
     }else{
         restassignR->Type = EPSILON;
-        printf("noToken%d\n",tok);
         return restassignR;
     }
 }
@@ -1824,21 +1829,12 @@ struct SyntaxTree_* exp() {
 	restexpT = (st*)malloc(sizeof(st));
 	expR = (st*)malloc(sizeof(st));
 
-    printf("exp\n");
     termT = term();
     restexpT = restexp();
     expR->Type = EPSILON;
     expR->left = termT;
     expR->right = restexpT;
 
-/*
-	termT = term();
-	restexpT = restexp();
-
-	expR->Type = PLUS;
-	expR->left = termT;
-	expR->right = restexpT;
-*/
 	return expR;
 }
 
@@ -1851,15 +1847,10 @@ struct SyntaxTree_* restexp() {
 	restexpT = (st*)malloc(sizeof(st));
 	restexpR = (st*)malloc(sizeof(st));
 
-    printf("restexp%d\n",tok);
-    //if((tok=yylex())!=111){
     if(tok!=111){
     	if (tok == PLUS) {
     		tok = yylex();
-            printf("PLUS%d\n",tok);
     		termT = term();
-    		//termT = exp();
-            printf("PLUS%d\n",tok);
     		restexpT = restexp();
 
     		restexpR->Type = PLUS;
@@ -1871,7 +1862,6 @@ struct SyntaxTree_* restexp() {
     	else if (tok == MINUS) {
     		tok = yylex();
     		termT = term();
-    		//termT = exp();
     		restexpT = restexp();
 
     		restexpR->Type = MINUS;
@@ -1885,7 +1875,6 @@ struct SyntaxTree_* restexp() {
         return restexpR;
     }else{
         restexpR->Type = EPSILON;
-        printf("noToken%d\n",tok);
         return restexpR;
     }
 }
@@ -1899,7 +1888,6 @@ struct SyntaxTree_* term() {
 	resttermT = (st*)malloc(sizeof(st));
 	termR = (st*)malloc(sizeof(st));
 
-    printf("term\n");
 	factorT = factor();
 	resttermT = restterm();
 
@@ -1919,12 +1907,9 @@ struct SyntaxTree_* restterm() {
 	resttermT = (st*)malloc(sizeof(st));
 	resttermR = (st*)malloc(sizeof(st));
 
-    printf("restterm\n");
-    //if((tok=yylex())!=111){
     if(tok!=111){
     	if (tok == MULTI) {
     		tok = yylex();
-            printf("MULTI\n");
     		factorT = factor();
     		resttermT = restterm();
 
@@ -1936,7 +1921,6 @@ struct SyntaxTree_* restterm() {
     	}
     	else if (tok == DIV) {
     		tok = yylex();
-            printf("DIV\n");
     		factorT = factor();
     		resttermT = restterm();
 
@@ -1950,39 +1934,33 @@ struct SyntaxTree_* restterm() {
         return resttermR;
     }else{
         resttermR->Type = EPSILON;
-        printf("noToken%d\n",tok);
         return resttermR;
     }
 }
 
-
-
 struct SyntaxTree_* factor() {
 	st* expT;
 	st* expR;
-	int value;
+	double value;
     int i = 0;
 
 	expT = (st*)malloc(sizeof(st));
 	expR = (st*)malloc(sizeof(st));
 
-    printf("factor%d\n",tok);
 	if (tok == LBRACE) {
 		tok = yylex();
 		expT = exp();
-        printf("expEnd%d\n",tok);
-		//tok = yylex();
 		if (tok == RBRACE) {
 		    tok = yylex();
 			return expT;
 		}
 		syntaxError_ = 1;
+        printf("syntax Error!!\n");
         return 0;
 	}
 	else if (tok == MINUS) {
-        printf("UNARY!!!!\n");
-		tok = yylex();
-		expT = exp();
+        tok = yylex();
+        expT=factor();
 
         expR->Type = UNARY;
 		expR->left = expT;
@@ -1991,15 +1969,19 @@ struct SyntaxTree_* factor() {
 	}
 	else if (tok == INTEGERS) {
 		value = atoi(yylINT);
-		tok = yylex();
-
+        tok = yylex();
 		expR->Type = INTEGERS;
 		expR->number = value;
 
-        printf("exprNUM %d\n", expR->number);
 		return expR;
+    }else if (tok == FLOAT){
+        value = atof(yylval);
+        tok = yylex();
+        expR->Type = FLOAT;
+        expR->number = value;
+
+        return expR;
 	}else if (tok == IDENTIFIERS) {
-        printf("id\n");
         i = 0;
         while(i < id_num){
             if(!(strcmp(yylID, sym_table[i].id))){
@@ -2013,43 +1995,30 @@ struct SyntaxTree_* factor() {
                 yylID[16] = '\0';
             strcpy(sym_table[(id_num-1)].id, yylID);
             strcpy(expR->id, sym_table[(id_num-1)].id);
-            printf("%s = %d\n",sym_table[(id_num-1)].id, sym_table[(id_num-1)].value);
+            sym_table[id_num-1].isAssign = 0;
 
             id_num++;
+        }else{
+            strcpy(expR->id, sym_table[(i-1)].id);
         }
-        printf("<ID, %3d>\t\t\t",i);
-        printf("%s\n",yylID);
-
         expR->Type = IDENTIFIERS;
-        strcpy(expR->id, sym_table[(i-1)].id);
-        printf("%s = %d\n",sym_table[(i-1)].id, sym_table[(i-1)].value);
         tok = yylex();
 
         return expR;
 	}else{
-        printf("ERROR!!!!\n");
         syntaxError_ = 1;
+        printf("Syntax Error!!\n");
         return 0;
     }
 }
 
 struct SyntaxTree_* buildST(st* synTree) {
-    printf("SynTree IN!!\n");
-
-    if(synTree->Type == INTEGERS){
-        printf("INTEGERS!!\n");
+    if(synTree->Type == INTEGERS || synTree->Type == FLOAT){
         return synTree;
     }else if(synTree->Type == UNARY){
-        printf("UNARY\n");
         synTree->left = buildST(synTree->left);
         return synTree;
     }else if(synTree->Type == IDENTIFIERS){
-        printf("IDENTIFIERS\n");
-        return synTree;
-    }else if(synTree->right->Type == EPSILON || synTree->right->Type == 0){
-        printf("rightEpsilon\n");
-        synTree = buildST(synTree->left);
-        printf("out!!\n");
         return synTree;
     }else if(synTree->right->Type == PLUS ||
             synTree->right->Type == MINUS ||
@@ -2058,15 +2027,15 @@ struct SyntaxTree_* buildST(st* synTree) {
             synTree->right->Type == ASSIGN
             )
     {
-        printf("right%d\n",synTree->right->Type);
         synTree->Type = synTree->right->Type;
         synTree->right->Type = EPSILON;
         synTree->left = buildST(synTree->left);
-        printf("%d\n",synTree->left->Type);
         synTree->right = buildST(synTree->right);
         return synTree;
+    }else if(synTree->right->Type == EPSILON || synTree->right->Type == 0){
+        synTree = buildST(synTree->left);
+        return synTree;
     }else{
-        printf("NO\n");
         synTree->left = buildST(synTree->left);
         synTree->right = buildST(synTree->right);
         return synTree;
@@ -2074,20 +2043,20 @@ struct SyntaxTree_* buildST(st* synTree) {
 
 }
 
-int eval(st* synTree) {
-	int v1;
-	int v2;
+double eval(st* synTree) {
+	double v1;
+	double v2;
     int assignI;
     static int i = 0;
 
 
-	if (synTree->Type == INTEGERS) {
-        printf("INTEGERS\n");
+	if (synTree->Type == INTEGERS || synTree->Type == FLOAT) {
 		return synTree->number;
-	}
+	}else if (synTree->Type == UNARY) {
+		return -eval(synTree->left);
+    }
     else if (synTree->Type == IDENTIFIERS) {
         i = 0;
-        printf("INDENTIFIERS\n");
         while(i < id_num){
             if(!(strcmp(synTree->id, sym_table[i].id))){
                 i++; break;
@@ -2097,21 +2066,18 @@ int eval(st* synTree) {
         if(i > id_num){
             // no id
         }else{
-            printf("identifier : %s = %d\n",sym_table[i-1].id, sym_table[i-1].value);
-            return sym_table[i-1].value;
+            if(sym_table[i-1].isAssign == 1){
+                return sym_table[i-1].value;
+            }else{
+                syntaxError_ = 1;
+                printf("NO DEFINITION\n");
+                return 0;
+            }
         }
-
-    }
-	else if (synTree->Type == UNARY) {
-        printf("UNARY\n");
-        v1 = eval(synTree->left);
-        printf("-v1 = %d\n",-v1);
-		return -v1;
-		//return -eval(synTree->left);
 	}else if (synTree->Type == ASSIGN) {
-        printf("ASSIGN\n");
         if(synTree->left->Type != IDENTIFIERS){
             //syntax error
+            printf("syntax Error!!\n");
             syntaxError_ = 1;
             return 0;
         } else{
@@ -2126,32 +2092,22 @@ int eval(st* synTree) {
                 // no id error
             }else{
                 assignI = i-1;
-                printf("%d\n",assignI);
                 sym_table[assignI].value = eval(synTree->right);
-                printf("end Assign %s = %d\n",sym_table[assignI].id, sym_table[assignI].value);
+                sym_table[assignI].isAssign = 1;
                 return sym_table[assignI].value;
             }
         }
-        printf("v1=v2\n");
     }
 	else {
 		v1 = eval(synTree->left);
 		v2 = eval(synTree->right);
 		if (synTree->Type == PLUS) {
-            printf("plus\n");
-            printf("v1+v2 = %d\n",v1+v2);
 			return v1 + v2;
 		}else if (synTree->Type == MINUS) {
-            printf("minus\n");
-            printf("v1-v2 = %d\n",v1-v2);
 			return v1 - v2;
 		}else if (synTree->Type == MULTI) {
-            printf("MUL\n");
-            printf("v1*v2 = %d\n",v1*v2);
 			return v1*v2;
 		}else if (synTree->Type == DIV) {
-            printf("div\n");
-            printf("v1/v2 = %d\n",v1/v2);
 			return v1/v2;
         }
 	}
@@ -2159,40 +2115,42 @@ int eval(st* synTree) {
 }
 
 int main(void){
-    int i = 0;
+    double i = 0;
 	st* parseTree;
 	st* synTree;
 	st* right;
+    int visibleInteger = 0;
 
     sym_table = (symtable*)malloc(20*sizeof(symtable));
 	parseTree = (st*)malloc(sizeof(st));
 	synTree = (st*)malloc(sizeof(st));
 	right = (st*)malloc(sizeof(st));
 
-	//tok = yylex();
-	//left->number = 10;
-	//left->Type = INTEGERS;
-	//right->number = 20;
-	//right->Type = INTEGERS;
-
-	//synTree->left = left;
-	//synTree->right = right;
-	//synTree->Type = PLUS;
-
     while( !(syntaxError_ == 1)){
 
+        if(visibleInteger == 0){
+            printf("visible Integer?(yes : 1, no : 0.1) : ");
+            visibleInteger = yylex();
+            tok = yylex(); // \n eliminate
+            continue;
+        }
+
+        printf("\n> ");
     	parseTree = parsing();
-        printf("\n\n");
         if(exit_ == 1){
             break;
         }else if(syntaxError_ == 1){
-            printf("syntaxError!!\n");
+            //printf("syntaxError!!\n");
             break;
         }
         synTree = buildST(parseTree);
-        printf("%d\n", synTree->Type);
-        printf("\n\n\n");
+        //printf("%d\n", synTree->Type);
+        //printf("\n\n");
     	i = eval(synTree);
-    	printf("%d\n", i);
+        if(visibleInteger == INTEGERS){
+    	   printf("%.0f\n", i);
+        }else{
+    	   printf("%.2f\n", i);
+        }
     }
 }

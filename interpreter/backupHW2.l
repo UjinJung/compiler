@@ -98,13 +98,14 @@ struct SyntaxTree_* exp();
 struct SyntaxTree_* restexp();
 struct SyntaxTree_* term();
 struct SyntaxTree_* restterm();
-struct SyntaxTree_* assign  ();
+struct SyntaxTree_* assign();
 struct SyntaxTree_* restassign();
 struct SyntaxTree_* factor();
 
 typedef struct SyntaxTree_ {
     int  Type;
-    int  number;
+    //int  number;
+    double  number;
     char id[17];
     struct SyntaxTree_ *left;
     struct SyntaxTree_ *right;
@@ -112,7 +113,8 @@ typedef struct SyntaxTree_ {
 
 typedef struct SymTable_ {
     char id[17];
-    int value;
+    double  value;
+    //int value;
 } symtable;
 
 struct SymTable_* sym_table;
@@ -201,14 +203,6 @@ struct SyntaxTree_* exp() {
     expR->left = termT;
     expR->right = restexpT;
 
-/*
-	termT = term();
-	restexpT = restexp();
-
-	expR->Type = PLUS;
-	expR->left = termT;
-	expR->right = restexpT;
-*/
 	return expR;
 }
 
@@ -222,7 +216,6 @@ struct SyntaxTree_* restexp() {
 	restexpR = (st*)malloc(sizeof(st));
 
     printf("restexp%d\n",tok);
-    //if((tok=yylex())!=111){
     if(tok!=111){
     	if (tok == PLUS) {
     		tok = yylex();
@@ -290,7 +283,6 @@ struct SyntaxTree_* restterm() {
 	resttermR = (st*)malloc(sizeof(st));
 
     printf("restterm\n");
-    //if((tok=yylex())!=111){
     if(tok!=111){
     	if (tok == MULTI) {
     		tok = yylex();
@@ -341,7 +333,6 @@ struct SyntaxTree_* factor() {
 		tok = yylex();
 		expT = exp();
         printf("expEnd%d\n",tok);
-		//tok = yylex();
 		if (tok == RBRACE) {
 		    tok = yylex();
 			return expT;
@@ -368,6 +359,15 @@ struct SyntaxTree_* factor() {
 
         printf("exprNUM %d\n", expR->number);
 		return expR;
+	}else if (tok == FLOAT) {
+        value = atof(yylval);
+		tok = yylex();
+
+		expR->Type = FLOAT;
+		expR->number = value;
+
+        printf("exprNUM %d\n", expR->number);
+		return expR;
 	}else if (tok == IDENTIFIERS) {
         printf("id\n");
         i = 0;
@@ -383,16 +383,15 @@ struct SyntaxTree_* factor() {
                 yylID[16] = '\0';
             strcpy(sym_table[(id_num-1)].id, yylID);
             strcpy(expR->id, sym_table[(id_num-1)].id);
+            sym_table[id_num-1].value = -1;
             printf("%s = %d\n",sym_table[(id_num-1)].id, sym_table[(id_num-1)].value);
 
             id_num++;
+        }else{
+            strcpy(expR->id, sym_table[(i-1)].id);
+            printf("%s = %d\n",sym_table[(i-1)].id, sym_table[(i-1)].value);
         }
-        printf("<ID, %3d>\t\t\t",i);
-        printf("%s\n",yylID);
-
         expR->Type = IDENTIFIERS;
-        strcpy(expR->id, sym_table[(i-1)].id);
-        printf("%s = %d\n",sym_table[(i-1)].id, sym_table[(i-1)].value);
         tok = yylex();
 
         return expR;
@@ -406,7 +405,7 @@ struct SyntaxTree_* factor() {
 struct SyntaxTree_* buildST(st* synTree) {
     printf("SynTree IN!!\n");
 
-    if(synTree->Type == INTEGERS){
+    if(synTree->Type == INTEGERS || synTree->Type == FLOAT){
         printf("INTEGERS!!\n");
         return synTree;
     }else if(synTree->Type == UNARY){
@@ -444,12 +443,12 @@ struct SyntaxTree_* buildST(st* synTree) {
 
 }
 
-int eval(st* synTree) {
+//int eval(st* synTree) {
+double eval(st* synTree) {
 	int v1;
 	int v2;
     int assignI;
     static int i = 0;
-
 
 	if (synTree->Type == INTEGERS) {
         printf("INTEGERS\n");
@@ -466,22 +465,21 @@ int eval(st* synTree) {
         }
         if(i > id_num){
             // no id
+            printf("NO ID!!!!!!!!!!!!!!!\n");
         }else{
             printf("identifier : %s = %d\n",sym_table[i-1].id, sym_table[i-1].value);
             return sym_table[i-1].value;
         }
-
     }
 	else if (synTree->Type == UNARY) {
         printf("UNARY\n");
         v1 = eval(synTree->left);
         printf("-v1 = %d\n",-v1);
 		return -v1;
-		//return -eval(synTree->left);
 	}else if (synTree->Type == ASSIGN) {
         printf("ASSIGN\n");
         if(synTree->left->Type != IDENTIFIERS){
-            //syntax error
+            printf("syntax Error!!\n");
             syntaxError_ = 1;
             return 0;
         } else{
