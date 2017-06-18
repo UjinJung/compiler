@@ -63,14 +63,14 @@ line:
 eval_print:
     eval_print stmt       { 
             temp = eval($2);
-            if(temp != -1){
+           if(temp != -1){
                 if((int)(temp*10)%10 != 0){
                     printf("%f \n?- ", temp); 
                 } else {
                     printf("%d \n?- ", (int)temp); 
                 }
                 controlState = 0;
-            }
+            } 
             freeNode($2); 
         }
     | eval_print function     {  } 
@@ -98,9 +98,9 @@ stmt:
 
  
 function:
-    DEF VARIABLE '(' param ')' stmt_list RETURN VARIABLE ';' END  { printf("1\n");generateFuncNode($2, 0, $4, $6, $8); } 
-    | DEF VARIABLE '(' param ')' LOCAL var ';' stmt_list RETURN VARIABLE ';' END  { generateFuncNode($2, 1, $4, $9, $11, $7); } 
-    | VARIABLE'(' param_alloc ')' ';'     { printf("11\n"); evalFunc($1, $3); }
+    DEF VARIABLE '(' param ')' stmt_list RETURN VARIABLE ';' END  { printf("1\n");generateFuncNode($2, 0, $4, $6, $8); printf("%s define\n", $2); } 
+    | DEF VARIABLE '(' param ')' LOCAL var ';' stmt_list RETURN VARIABLE ';' END  { generateFuncNode($2, 1, $4, $9, $11, $7);  printf("%s define\n", $2);} 
+    | VARIABLE'(' param_alloc ')' ';'     { evalFunc($1, $3);}
     ;
 
 var:
@@ -319,7 +319,7 @@ double evalFunc(char* funcName, synTree_* paramTree){
     }
 
     if(i > func_num){
-        printf("No Function\n");
+        yyerror("No Function");
         return 0.0;
     }
 
@@ -333,7 +333,7 @@ double evalFunc(char* funcName, synTree_* paramTree){
     funcEvalState = evalFuncState;
 
     // printf("func123 %d, %s, %s\n", Func, func_table[func_current_num]->functionNode_.funcName ,func_table[func_current_num]->functionNode_.returnId);
-    // printf("wow: %f\n",eval(func_table[func_current_num]));
+    eval(func_table[func_current_num]);
     // printf("YES: %s\n", func_table[func_current_num]->functionNode_.returnId);
 
     i = 0;
@@ -351,8 +351,14 @@ double evalFunc(char* funcName, synTree_* paramTree){
         printf("no,,,,,,,,\n");
     }
     // printf("local_top: %d, %s, %f\n",local_table[func_current_num].top, local_table[func_current_num].table[i].id, local_table[func_current_num].table[i].value);
-    // printf("result: %f\n", result);
-
+    if(result != -1){
+        if((int)(result*10)%10 != 0){
+            printf("%f \n?- ", result); 
+        } else {
+            printf("%d \n?- ", (int)result); 
+        }
+        funcEvalState = notFuncState;
+    }
     return 0.0;
     
 }
@@ -428,14 +434,12 @@ double eval(synTree_ *syntaxTree) {
                                 eval(syntaxTree->operNode_.op[1]);
                             printf("while\n?- ");
                             return -1;
-                case IF: printf("in IF\n");
-                         if (eval(syntaxTree->operNode_.op[0])){
-                            printf("thats truuuuue\n\n");
+                case IF: if (eval(syntaxTree->operNode_.op[0]))
                             eval(syntaxTree->operNode_.op[1]);
-                         }
                          else if (syntaxTree->operNode_.operNumber > 2)
                             eval(syntaxTree->operNode_.op[2]);
-                         printf("if\n?- ");
+                         if(funcEvalState == notFuncState)
+                            printf("if\n?- ");
                          return -1;
                 case ';':   eval(syntaxTree->operNode_.op[0]); return eval(syntaxTree->operNode_.op[1]);
                 case '=':  
@@ -447,12 +451,15 @@ double eval(synTree_ *syntaxTree) {
                             }
                             i++;
                         }
-                        
+
+                        if(i >= local_table[func_current_num].top){
+                            yyerror("No local value");
+                        }
                         local_table[func_current_num].table[i].value = eval(syntaxTree->operNode_.op[1]);
-                        printf("local_top111: %d, %s, %f\n",local_table[func_current_num].top, local_table[func_current_num].table[i].id, local_table[func_current_num].table[i].value);
+                        // printf("local_top111: %d, %s, %f\n",local_table[func_current_num].top, local_table[func_current_num].table[i].id, local_table[func_current_num].table[i].value);
                         return local_table[func_current_num].table[i].value;
                     }else{
-                        printf("notFunc\n");
+                        // printf("notFunc\n");
                         return sym_table[syntaxTree->operNode_.op[0]->idNode_.tableNumber].value = eval(syntaxTree->operNode_.op[1]); 
                     }
                 case UMINUS:    return -eval(syntaxTree->operNode_.op[0]);
@@ -467,9 +474,9 @@ double eval(synTree_ *syntaxTree) {
                 case NE :    return eval(syntaxTree->operNode_.op[0]) != eval(syntaxTree->operNode_.op[1]);
                 case EQ :    return eval(syntaxTree->operNode_.op[0]) == eval(syntaxTree->operNode_.op[1]);
                 case ',':    {
-                    printf("YES\n");
+                    // printf("YES\n");
                     param_table[func_current_num].table[param_index-1].value = eval(syntaxTree->operNode_.op[1]); 
-                    printf("pa1 : %d, %s, %f \n", param_index, param_table[func_current_num].table[param_index-1].id, param_table[func_current_num].table[param_index-1].value);
+                    // printf("pa1 : %d, %s, %f \n", param_index, param_table[func_current_num].table[param_index-1].id, param_table[func_current_num].table[param_index-1].value);
                     param_index--;
                     eval(syntaxTree->operNode_.op[0]);
                 }
