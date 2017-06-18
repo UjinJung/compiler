@@ -79,16 +79,13 @@ eval_print:
 
 stmt:
     ';'                 {
-                            if(controlState == 1 || funcState == 1)
-                            printf("> ");  $$ = operNode_(';', 2, NULL, NULL); 
+                              $$ = operNode_(';', 2, NULL, NULL); 
                         }
     | expr ';'          {
-                            if(controlState == 1 || funcState == 1)
-                            printf("> ");  $$ = $1; 
+                             $$ = $1; 
                         }
     | VARIABLE '=' expr ';'     { 
-                                    if(controlState == 1 || funcState == 1)
-                                        printf("> ");  
+                                   
                                     $$ = operNode_('=', 2, idNode_(normalId, 0, $1), $3);  
                                 }
     | WHILE '(' expr ')' stmt END                       { controlState = 1; $$ = operNode_(WHILE, 2, $3, $5); }
@@ -98,8 +95,8 @@ stmt:
 
  
 function:
-    DEF VARIABLE '(' param ')' stmt_list RETURN VARIABLE ';' END  { printf("1\n");generateFuncNode($2, 0, $4, $6, $8); printf("%s define\n", $2); } 
-    | DEF VARIABLE '(' param ')' LOCAL var ';' stmt_list RETURN VARIABLE ';' END  { generateFuncNode($2, 1, $4, $9, $11, $7);  printf("%s define\n", $2);} 
+    DEF VARIABLE '(' param ')' stmt_list RETURN VARIABLE ';' END  { printf("1\n");generateFuncNode($2, 0, $4, $6, $8); printf("%s define\n?- ", $2); } 
+    | DEF VARIABLE '(' param ')' LOCAL var ';' stmt_list RETURN VARIABLE ';' END  { generateFuncNode($2, 1, $4, $9, $11, $7);  printf("%s define\n?- ", $2);} 
     | VARIABLE'(' param_alloc ')' ';'     { evalFunc($1, $3);}
     ;
 

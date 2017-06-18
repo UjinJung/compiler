@@ -5,7 +5,7 @@
 void yyerror(char *);
 %}
 
-blank [ \t\n]+
+blank [ \t]+
 letter [a-zA-Z]
 digit [0-9]
 float {digit}"."{digit}*
@@ -42,8 +42,8 @@ lexi .*\n
 "=="    return EQ;
 "!="    return NE;
 "while" { controlState = 1; return WHILE; }
-"if"    { printf("> "); controlState = 1; return IF; }
-"else"  { printf("> "); return ELSE; }
+"if"    { controlState = 1; return IF; }
+"else"  { return ELSE; }
 "end"   { 
         if(controlState == 1)
             controlState = 0; 
@@ -52,7 +52,7 @@ lexi .*\n
 
         return END; 
     }
-"def"   {controlState = 1;  funcState = 1; return DEF; }
+"def"   { funcState = 1; return DEF; }
 "local"   return LOCAL;
 "return"   return RETURN;
 
@@ -62,6 +62,7 @@ lexi .*\n
 }
 
 {blank} ; /* ignore whitespace */
+\n      {if(controlState == 1 || funcState == 1) printf("> ");}
 
 . yyerror("lexical error");
 %%

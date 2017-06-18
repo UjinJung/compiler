@@ -16,7 +16,7 @@ z = 10;
 else
 x = 20;
 end
-return y;
+return x;
 end
 
 
