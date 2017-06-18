@@ -1,23 +1,32 @@
-typedef enum { typeCo,
-               typeId,
-               typePr,
-               typeDouble } nodeEnum;
+typedef enum { intVal,
+               doubleVal,
+               operatorVal,
+               normalId,
+               paramId,
+               localId,
+               Func} nodeEnum;
 
-typedef struct SymTable_{
+typedef enum {  notFuncState, 
+                paramState,
+                evalFuncState 
+             } funcStateEnum;
+
+typedef struct {
     char id[17];
     double value;
     char isAssign;
 } symtable;
 
-typedef struct
-{
-    int value;
-} constNode;
+typedef struct {
+    char funcName[17];
+    int top;
+    symtable table[20];
+} functable;
 
 typedef struct
 {
     int value;
-} functionNode;
+} constNode;
 
 typedef struct
 {
@@ -28,15 +37,26 @@ typedef struct
 {
     char id[17];
     int tableNumber; 
-    double value;
+    struct nodeType *op[1];
+    // double value;
 } idNode;
 
 typedef struct
 {
     int oper;
     int operNumber;
+    struct nodeType *condition[1];
     struct nodeType *op[1];
 } oprNode;
+
+typedef struct
+{
+    int operNumber;
+    char funcName[17];
+    char returnId[17];
+    int funcNumber;
+    struct nodeType *op[1];
+} functionNode;
 
 typedef struct nodeType
 {
@@ -51,6 +71,10 @@ typedef struct nodeType
     };
 } synTree_;
 
-extern struct SymTable_* sym_table;
-extern int symTable[100];
-extern char controlStmt;
+extern char controlState;
+extern char funcState;
+extern symtable* sym_table;
+extern functable* param_table;
+extern functable* local_table;
+
+extern synTree_* func_table[20];

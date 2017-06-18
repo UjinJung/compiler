@@ -41,11 +41,20 @@ lexi .*\n
 "<="    return LE;
 "=="    return EQ;
 "!="    return NE;
-"while" { controlStmt = 1; return WHILE; }
-"if"    { printf("> "); controlStmt = 1; return IF; }
+"while" { controlState = 1; return WHILE; }
+"if"    { printf("> "); controlState = 1; return IF; }
 "else"  { printf("> "); return ELSE; }
-"end"   { controlStmt = 0; return END; }
-"def"   return DEF;
+"end"   { 
+        if(controlState == 1)
+            controlState = 0; 
+        else
+            funcState = 0;
+
+        return END; 
+    }
+"def"   {controlState = 1;  funcState = 1; return DEF; }
+"local"   return LOCAL;
+"return"   return RETURN;
 
 {identifiers} {
     strcpy(yylval.sIndex, yytext);

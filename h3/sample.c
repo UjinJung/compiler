@@ -6,3 +6,17 @@ else
     y= 18;
 end
 y;
+
+def f(a, b)
+local x, y;
+if(a<b)
+x = 123;
+y = 100;
+else
+x = 20;
+end
+return y;
+end
+
+
+f(2,7);

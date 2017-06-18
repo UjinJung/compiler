@@ -46,13 +46,15 @@
      IF = 262,
      END = 263,
      DEF = 264,
-     IFX = 265,
-     ELSE = 266,
-     NE = 267,
-     EQ = 268,
-     LE = 269,
-     GE = 270,
-     UMINUS = 271
+     LOCAL = 265,
+     RETURN = 266,
+     IFX = 267,
+     ELSE = 268,
+     NE = 269,
+     EQ = 270,
+     LE = 271,
+     GE = 272,
+     UMINUS = 273
    };
 #endif
 
@@ -63,7 +65,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 26 "ex.y"
+#line 35 "ex.y"
 
     int ival;
     double dval;
@@ -73,7 +75,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 77 "y.tab.h"
+#line 79 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
